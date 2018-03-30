@@ -1,0 +1,15 @@
+{
+  "env": {
+    "mocha": true
+  },
+  "globals": {
+    "assert": false,
+    "fixture": false,
+    "WCT": false,
+    "flush": true,
+    "sinon": true
+  },
+  "rules": {
+    "max-len": 0
+  }
+}

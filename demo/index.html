@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <title>Demo kolor-picker</title>
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
+    <link rel="import" href="../kolor-picker.html">
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <dom-bind>
+      <template>
+        <p>Color: [[color]]</p>
+        <kolor-picker color="{{color}}" uppercase></kolor-picker>
+      </template>
+    </dom-bind>
+
+    <script>
+      {
+        const app = document.querySelector('dom-bind');
+        app.color = '#7fff00';
+      }
+    </script>
+  </body>
+</html>

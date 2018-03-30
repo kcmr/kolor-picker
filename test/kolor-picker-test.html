@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" href="../kolor-picker.html">
+</head>
+
+<body>
+  <test-fixture id="default">
+    <template>
+      <kolor-picker></kolor-picker>
+    </template>
+  </test-fixture>
+
+  <script>
+    suite('<kolor-picker>', () => {
+      let el;
+
+      setup(() => {
+        el = fixture('default');
+      });
+
+      test('dummy test', () => {
+        assert.isOk(el);
+      });
+    });
+  </script>
+</body>
+
+</html>
