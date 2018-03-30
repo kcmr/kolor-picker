@@ -1,0 +1,240 @@
+<link rel="import" href="../../polymer/polymer-element.html">
+<link rel="import" href="color-picker-import.html">
+
+<dom-module id="kolor-picker">
+  <template>
+    <style>
+      :host([hidden]), [hidden] {
+        display: none !important;
+      }
+      
+      :host {
+        display: block;
+      }
+      
+      .btn-picker {
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .current-color {
+        display: block;
+        width: 1.25rem;
+        height: 1.25rem;
+        border: none;
+      }
+      
+      .color-picker,
+      .color-picker:before,
+      .color-picker:after,
+      .color-picker *,
+      .color-picker *:before,
+      .color-picker *:after {
+        box-sizing: border-box;
+      }
+      
+      .color-picker {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+      }
+      
+      .color-picker-control {
+        padding: 0.625rem;
+        box-shadow: 0 1px 1px rgba(0,0,0,0.5);
+        background-color: #fff;
+        border-radius: 2px;
+        display: flex;
+        flex-direction: row-reverse;
+      }
+      
+      .color-picker-control *,
+      .color-picker-control *:before,
+      .color-picker-control *:after {border-color:inherit}
+      .color-picker-control:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+      
+      .color-picker i {
+        font: inherit;
+      }
+      
+      .color-picker-h {
+        position: relative;
+        width: 1.25rem;
+        height: 9.375rem;
+        margin-left: 0.0625rem;
+        cursor: ns-resize;
+        background-image: linear-gradient(to top,#f00 0%,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,#f00 100%);
+        background-size: 100% 100%;
+        overflow: hidden;
+      }
+      
+      .color-picker-h i {
+        position: absolute;
+        top: -0.1875rem;
+        right: 0;
+        left: 0;
+        z-index: 3;
+        display: block;
+        height: 0.375rem;
+      }
+      
+      .color-picker-h i:before {
+        content:"";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: block;
+        border: 3px solid;
+        border-color: inherit;
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+      }
+      
+      .color-picker-sv {
+        position: relative;
+        width: 9.375rem;
+        height: 9.375rem;
+        float: left;
+        background-image: linear-gradient(to top,#000,rgba(0,0,0,0)),linear-gradient(to right,#fff,rgba(255,255,255,0));
+        background-size: 100% 100%;
+        cursor: crosshair;
+      }
+      
+      .color-picker-sv i {
+        position: absolute;
+        top: -0.25rem;
+        right: -0.25rem;
+        z-index: 3;
+        display: block;
+        width: 0.5rem;
+        height: 0.5rem;
+      }
+      
+      .color-picker-sv i:before,
+      .color-picker-sv i:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: block;
+        border: 1px solid;
+        border-color: inherit;
+        border-radius: 100%;
+      }
+      
+      .color-picker-sv i:before {
+        top: -0.0625rem;
+        right: -0.0625rem;
+        bottom: -0.0625rem;
+        left: -0.0625rem;
+        border-color: #fff;
+      }
+      
+      .color-picker-h,
+      .color-picker-sv {
+        -webkit-user-select: none;
+           -moz-user-select: none;
+            -ms-user-select: none;
+                user-select: none;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: transparent;
+      }
+    </style>
+
+    <button on-click="show" title="Choose color" class="btn-picker" tabindex="0">
+      <slot name="color-indicator">
+        <span tabindex="-1" class="current-color" style$="background-color: [[color]]"></span>
+      </slot>
+    </button>
+
+    <input type="text" id="input" value="[[color]]" on-keydown="show" on-click="show" on-blur="hide">
+    <div id="picker">
+      <input type="range" min="0" max="1" step="0.01" value="1">
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `<kolor-picker>` displays a color picker with support for multiple color formats (hex, rgb, rgba) and transparency.
+     *
+     * @summary Polymer 2 element that displays a color picker.
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     * @extends {Polymer.Element}
+     */
+    class KolorPicker extends Polymer.Element {
+      static get is() {
+        return 'kolor-picker';
+      }
+    
+      static get properties() {
+        return {
+          /**
+           * Initial color of the picker in one of the allowed formats: HEX, RGB, RGBA.
+           * Named colors are not supported.
+           */
+          color: {
+            type: String,
+            value: '#000',
+            notify: true,
+          },
+          /**
+           * Set to true to uppercase HEX values.
+           */
+          uppercase: {
+            type: Boolean,
+            value: false,
+          },
+        };
+      }
+    
+      ready() {
+        super.ready();
+        this._initializePicker();
+      }
+    
+      /* global CP */
+      _initializePicker() {
+        this.picker = new CP(this.$.input, false, this.$.picker);
+        this.picker.on('change', this._setColor.bind(this));
+      }
+    
+      _setColor(color) {
+        this.color = this._getFormattedColor(color);
+      }
+    
+      _getFormattedColor(color) {
+        const formatted = `#${color}`;
+        return (this.uppercase) ? formatted.toUpperCase() : formatted;
+      }
+    
+      /**
+       * Shows the color picker.
+       */
+      show() {
+        this.picker.enter();
+      }
+    
+      /**
+       * Hides the color picker.
+       */
+      hide() {
+        this.picker.exit();
+      }
+    }
+    
+    window.customElements.define(KolorPicker.is, KolorPicker);
+  </script>
+</dom-module>
