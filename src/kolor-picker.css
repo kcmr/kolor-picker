@@ -21,6 +21,11 @@
   border: none;
 }
 
+.input-range {
+  width: 100%;
+  margin: 10px 0 0;
+}
+
 .color-picker,
 .color-picker::before,
 .color-picker::after,
@@ -39,11 +44,14 @@
 
 .color-picker-control {
   padding: 10px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   background-color: #fff;
   border-radius: 2px;
   display: flex;
   flex-direction: row-reverse;
+  flex-wrap: wrap;
+  width: 191px;
+  box-sizing: border-box;
 }
 
 .color-picker-control *,
@@ -101,7 +109,6 @@
   position: relative;
   width: 150px;
   height: 150px;
-  float: left;
   background-image: linear-gradient(to top, #000, rgba(0, 0, 0, 0)), linear-gradient(to right, #fff, rgba(255, 255, 255, 0));
   background-size: 100% 100%;
   cursor: crosshair;

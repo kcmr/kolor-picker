@@ -26,6 +26,11 @@
         border: none;
       }
       
+      .input-range {
+        width: 100%;
+        margin: 0.625rem 0 0;
+      }
+      
       .color-picker,
       .color-picker::before,
       .color-picker::after,
@@ -44,11 +49,14 @@
       
       .color-picker-control {
         padding: 0.625rem;
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
         background-color: #fff;
         border-radius: 2px;
         display: flex;
         flex-direction: row-reverse;
+        flex-wrap: wrap;
+        width: 11.9375rem;
+        box-sizing: border-box;
       }
       
       .color-picker-control *,
@@ -106,7 +114,6 @@
         position: relative;
         width: 9.375rem;
         height: 9.375rem;
-        float: left;
         background-image: linear-gradient(to top, #000, rgba(0, 0, 0, 0)), linear-gradient(to right, #fff, rgba(255, 255, 255, 0));
         background-size: 100% 100%;
         cursor: crosshair;
@@ -162,9 +169,8 @@
     </button>
 
     <input type="text" id="input" value="[[color]]" on-keydown="show" on-click="show" on-blur="hide">
-    <div id="picker">
-      <input type="range" min="0" max="1" step="0.01" value="1">
-    </div>
+    <input type="range" class="input-range" id="range" min="0" max="1" step="0.01" value="1" hidden>
+    <div id="picker"></div>
   </template>
 
   <script src="../../color-picker/color-picker.js"></script>
@@ -201,6 +207,13 @@
             type: Boolean,
             value: false,
           },
+          /**
+           * Set to true to enable alpha selector.
+           */
+          alpha: {
+            type: Boolean,
+            value: false,
+          },
         };
       }
     
@@ -212,12 +225,32 @@
       _initializePicker() {
         setTimeout(() => {
           this.picker = new CP(this.$.input, false, this.$.picker);
+          this.alpha && this._addAlphaControl();
           this.picker.on('change', this._setColor.bind(this));
         }, 1);
       }
     
+      _addAlphaControl() {
+        const rangeInput = this.$.range.cloneNode();
+        rangeInput.hidden = false;
+        this._onInputRangeChange = this._onInputRangeChange.bind(this);
+        ['change', 'input'].forEach((event) => {
+          rangeInput.addEventListener(event, this._onInputRangeChange);
+        });
+        this.picker.picker.querySelector('.color-picker-control').appendChild(rangeInput);
+      }
+    
       _setColor(color) {
         this.color = this._getFormattedColor(color);
+      }
+    
+      _onInputRangeChange(e) {
+        const rgbValues = CP._HSV2RGB(this.picker.set());
+        const isAlpha = Number(e.target.value) !== 1;
+        const rgbColor = (isAlpha)
+          ? `rgba(${rgbValues.concat(e.target.value).join(', ')})`
+          : `rgb(${rgbValues.join(', ')})`;
+        this.color = rgbColor;
       }
     
       _getFormattedColor(color) {

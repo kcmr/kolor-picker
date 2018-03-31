@@ -11,9 +11,8 @@
     </button>
 
     <input type="text" id="input" value="[[color]]" on-keydown="show" on-click="show" on-blur="hide">
-    <div id="picker">
-      <input type="range" min="0" max="1" step="0.01" value="1">
-    </div>
+    <input type="range" class="input-range" id="range" min="0" max="1" step="0.01" value="1" hidden>
+    <div id="picker"></div>
   </template>
 
   <script src="../../color-picker/color-picker.js"></script>

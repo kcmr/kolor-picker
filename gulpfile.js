@@ -51,6 +51,7 @@ gulp.task('watch:sources', () => {
 gulp.task('watch:dist', () => {
   gulp.watch([
     '*.html',
+    'demo/*',
     'dist/*.{html, js}',
     'test/**/*',
   ]).on('change', browserSync.reload);
