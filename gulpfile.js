@@ -16,7 +16,7 @@ const config = require('./.buildconfig.json');
 const BUILD_DIRECTORY = 'dist/';
 const TMP_DIRECTORY = '.tmp/';
 
-gulp.task('clean', () => del([BUILD_DIRECTORY]));
+gulp.task('clean', () => del.sync([BUILD_DIRECTORY, TMP_DIRECTORY]));
 
 gulp.task('styles', () => {
   return gulp.src(['src/*.css'])
