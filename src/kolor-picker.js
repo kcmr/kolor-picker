@@ -24,13 +24,6 @@ class KolorPicker extends Polymer.Element {
         notify: true,
       },
       /**
-       * Set to true to uppercase HEX values.
-       */
-      uppercase: {
-        type: Boolean,
-        value: false,
-      },
-      /**
        * Set to true to enable alpha selector.
        */
       alpha: {
