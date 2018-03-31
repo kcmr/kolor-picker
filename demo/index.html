@@ -17,7 +17,10 @@
     <dom-bind>
       <template>
         <p>Color: [[color]]</p>
-        <kolor-picker color="{{color}}" alpha></kolor-picker>
+        <label><input type="checkbox" checked="{{alpha::change}}"> Alpha</label>
+        <div>
+          <kolor-picker color="{{color}}" alpha="[[alpha]]"></kolor-picker>
+        </div>
       </template>
     </dom-bind>
 
@@ -25,6 +28,7 @@
       {
         const app = document.querySelector('dom-bind');
         app.color = '#7fff00';
+        app.alpha = true;
       }
     </script>
   </body>

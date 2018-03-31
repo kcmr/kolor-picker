@@ -50,6 +50,12 @@ class KolorPicker extends Polymer.Element {
     };
   }
 
+  static get observers() {
+    return [
+      '_alphaChanged(alpha, _rangeControl)',
+    ];
+  }
+
   constructor() {
     super();
     this._onClickOutside = this._onClickOutside.bind(this);
@@ -69,16 +75,36 @@ class KolorPicker extends Polymer.Element {
   _initializePicker() {
     setTimeout(() => {
       this.picker = new CP(this.$.input, false, this.$.picker);
-      this.alpha && this._addAlphaControl();
       this.picker.on('change', this._setColor.bind(this));
+      this._addAlphaControl();
     }, 1);
   }
 
+  _alphaChanged(alpha, rangeControl) {
+    if (!rangeControl) {
+      return;
+    }
+
+    if (alpha) {
+      this._enableAlphaControl();
+    } else {
+      this._disableAlphaControl();
+    }
+  }
+
   _addAlphaControl() {
-    const rangeInput = this.$.range.cloneNode();
-    rangeInput.hidden = false;
-    rangeInput.addEventListener('input', this._onInputRangeChange);
-    this.picker.picker.querySelector('.color-picker-control').appendChild(rangeInput);
+    this._rangeControl = this.$.range.cloneNode();
+    this.picker.picker.querySelector('.color-picker-control').appendChild(this._rangeControl);
+  }
+
+  _enableAlphaControl() {
+    this._rangeControl.hidden = false;
+    this._rangeControl.addEventListener('input', this._onInputRangeChange);
+  }
+
+  _disableAlphaControl() {
+    this._rangeControl.hidden = true;
+    this._rangeControl.removeEventListener('input', this._onInputRangeChange);
   }
 
   _setColor(color) {
