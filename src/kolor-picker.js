@@ -40,6 +40,17 @@ class KolorPicker extends Polymer.Element {
     };
   }
 
+  constructor() {
+    super();
+    this._onClickOutside = this._onClickOutside.bind(this);
+    this._onInputRangeChange = this._onInputRangeChange.bind(this);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('click', this._onClickOutside);
+  }
+
   ready() {
     super.ready();
     this._initializePicker();
@@ -56,7 +67,6 @@ class KolorPicker extends Polymer.Element {
   _addAlphaControl() {
     const rangeInput = this.$.range.cloneNode();
     rangeInput.hidden = false;
-    this._onInputRangeChange = this._onInputRangeChange.bind(this);
     ['change', 'input'].forEach((event) => {
       rangeInput.addEventListener(event, this._onInputRangeChange);
     });
@@ -86,6 +96,7 @@ class KolorPicker extends Polymer.Element {
    */
   show() {
     this.picker.enter();
+    document.addEventListener('click', this._onClickOutside);
   }
 
   /**
@@ -93,6 +104,16 @@ class KolorPicker extends Polymer.Element {
    */
   hide() {
     this.picker.exit();
+  }
+
+  _onClickOutside(e) {
+    const evPath = e.composedPath();
+    const clickOutsidePicker = evPath.indexOf(this.$.picker) === -1;
+    const clickInButton = evPath.indexOf(this.$.btn) !== -1;
+    if (clickOutsidePicker && !clickInButton) {
+      document.removeEventListener('click', this._onClickOutside);
+      this.hide();
+    }
   }
 }
 

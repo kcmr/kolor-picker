@@ -31,6 +31,10 @@
         margin: 0.625rem 0 0;
       }
       
+      .picker-wrapper {
+        position: relative;
+      }
+      
       .color-picker,
       .color-picker::before,
       .color-picker::after,
@@ -162,15 +166,15 @@
       }
     </style>
 
-    <button on-click="show" title="Choose color" class="btn-picker" tabindex="0">
+    <button on-click="show" title="Choose color" class="btn-picker" tabindex="0" id="btn">
       <slot name="color-indicator">
         <span tabindex="-1" class="current-color" style$="background-color: [[color]]"></span>
       </slot>
     </button>
 
-    <input type="text" id="input" value="[[color]]" on-keydown="show" on-click="show" on-blur="hide">
+    <input type="hidden" id="input" value="[[color]]">
     <input type="range" class="input-range" id="range" min="0" max="1" step="0.01" value="1" hidden>
-    <div id="picker"></div>
+    <div id="picker" class="picker-wrapper"></div>
   </template>
 
   <script src="../../color-picker/color-picker.js"></script>
@@ -217,6 +221,17 @@
         };
       }
     
+      constructor() {
+        super();
+        this._onClickOutside = this._onClickOutside.bind(this);
+        this._onInputRangeChange = this._onInputRangeChange.bind(this);
+      }
+    
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        document.removeEventListener('click', this._onClickOutside);
+      }
+    
       ready() {
         super.ready();
         this._initializePicker();
@@ -233,7 +248,6 @@
       _addAlphaControl() {
         const rangeInput = this.$.range.cloneNode();
         rangeInput.hidden = false;
-        this._onInputRangeChange = this._onInputRangeChange.bind(this);
         ['change', 'input'].forEach((event) => {
           rangeInput.addEventListener(event, this._onInputRangeChange);
         });
@@ -263,6 +277,7 @@
        */
       show() {
         this.picker.enter();
+        document.addEventListener('click', this._onClickOutside);
       }
     
       /**
@@ -270,6 +285,16 @@
        */
       hide() {
         this.picker.exit();
+      }
+    
+      _onClickOutside(e) {
+        const evPath = e.composedPath();
+        const clickOutsidePicker = evPath.indexOf(this.$.picker) === -1;
+        const clickInButton = evPath.indexOf(this.$.btn) !== -1;
+        if (clickOutsidePicker && !clickInButton) {
+          document.removeEventListener('click', this._onClickOutside);
+          this.hide();
+        }
       }
     }
     

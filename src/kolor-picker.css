@@ -26,6 +26,10 @@
   margin: 10px 0 0;
 }
 
+.picker-wrapper {
+  position: relative;
+}
+
 .color-picker,
 .color-picker::before,
 .color-picker::after,
