@@ -31,9 +31,8 @@ class KolorPicker extends Polymer.Element {
         value: false,
       },
       /**
-       * Color format in one of the available values ('hex' | 'rgb').
-       * When `alpha` is set to true, the format for colors with
-       * alpha transparency is automatically changed to `rgba`.
+       * Format for colors without alpha. ('rgb' | 'hex').
+       * Colors with alpha are always in 'rgba' format.
        */
       format: {
         type: String,
