@@ -1,5 +1,5 @@
 /**
- * `<kolor-picker>` displays a color picker with support for multiple color formats (hex, rgb, rgba) and transparency.
+ * `<kolor-picker>` displays a color picker with support for multiple color formats and alpha transparency.
  *
  * @summary Polymer 2 element that displays a color picker.
  * @customElement
@@ -37,9 +37,22 @@ class KolorPicker extends Polymer.Element {
         type: Boolean,
         value: false,
       },
+      /**
+       * Color format in one of the available values ('hex' | 'rgb').
+       * When `alpha` is set to true, the format for colors with
+       * alpha transparency is automatically changed to `rgba`.
+       */
+      format: {
+        type: String,
+        value: 'hex',
+      },
       _alpha: {
         type: Number,
         value: 1,
+      },
+      _format: {
+        type: String,
+        computed: '_computeFormat(format, _alpha)',
       },
     };
   }
@@ -76,7 +89,7 @@ class KolorPicker extends Polymer.Element {
   }
 
   _setColor(color) {
-    this.color = this._getFormattedColor(color);
+    this.color = this._getFormattedColor();
   }
 
   _onInputRangeChange(e) {
@@ -84,11 +97,18 @@ class KolorPicker extends Polymer.Element {
     this._setColor(CP._HSV2RGB(this.picker.set()));
   }
 
-  _getFormattedColor(color) {
+  _computeFormat(format, alpha) {
+    return (alpha !== 1) ? 'rgba' : format;
+  }
+
+  _getFormattedColor() {
     const rgbValues = CP._HSV2RGB(this.picker.get());
-    return (this._alpha !== 1)
-      ? `rgba(${rgbValues.concat(this._alpha).join(', ')})`
-      : `rgb(${rgbValues.join(', ')})`;
+    const getCSSColor = {
+      rgb: (value) => `rgb(${value.join(', ')})`,
+      rgba: (value) => `rgba(${value.concat(this._alpha).join(', ')})`,
+      hex: (value) => `#${CP.RGB2HEX(value)}`,
+    };
+    return getCSSColor[this._format](rgbValues);
   }
 
   /**
