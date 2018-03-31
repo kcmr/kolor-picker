@@ -80,7 +80,7 @@ class KolorPicker extends Polymer.Element {
     }, 1);
   }
 
-  _setColor(color) {
+  _setColor() {
     this.color = this._getFormattedColor();
   }
 
@@ -123,7 +123,7 @@ class KolorPicker extends Polymer.Element {
 
   _onInputRangeChange(e) {
     this._alphaValue = Number(e.target.value);
-    this._setColor(CP._HSV2RGB(this.picker.set()));
+    this._setColor();
   }
 
   _computeFormat(format, alphaValue) {
