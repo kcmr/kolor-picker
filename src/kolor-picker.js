@@ -39,13 +39,13 @@ class KolorPicker extends Polymer.Element {
         type: String,
         value: 'hex',
       },
-      _alpha: {
+      _alphaValue: {
         type: Number,
         value: 1,
       },
       _format: {
         type: String,
-        computed: '_computeFormat(format, _alpha)',
+        computed: '_computeFormat(format, _alphaValue)',
       },
     };
   }
@@ -80,6 +80,25 @@ class KolorPicker extends Polymer.Element {
     }, 1);
   }
 
+  _setColor(color) {
+    this.color = this._getFormattedColor();
+  }
+
+  _getFormattedColor() {
+    const rgbValues = CP._HSV2RGB(this.picker.get());
+    const getCSSColor = {
+      rgb: (value) => `rgb(${value.join(', ')})`,
+      rgba: (value) => `rgba(${value.concat(this._alphaValue).join(', ')})`,
+      hex: (value) => `#${CP.RGB2HEX(value)}`,
+    };
+    return getCSSColor[this._format](rgbValues);
+  }
+
+  _addAlphaControl() {
+    this._rangeControl = this.$.range.cloneNode();
+    this.picker.picker.querySelector('.color-picker-control').appendChild(this._rangeControl);
+  }
+
   _alphaChanged(alpha, rangeControl) {
     if (!rangeControl) {
       return;
@@ -92,11 +111,6 @@ class KolorPicker extends Polymer.Element {
     }
   }
 
-  _addAlphaControl() {
-    this._rangeControl = this.$.range.cloneNode();
-    this.picker.picker.querySelector('.color-picker-control').appendChild(this._rangeControl);
-  }
-
   _enableAlphaControl() {
     this._rangeControl.hidden = false;
     this._rangeControl.addEventListener('input', this._onInputRangeChange);
@@ -107,27 +121,13 @@ class KolorPicker extends Polymer.Element {
     this._rangeControl.removeEventListener('input', this._onInputRangeChange);
   }
 
-  _setColor(color) {
-    this.color = this._getFormattedColor();
-  }
-
   _onInputRangeChange(e) {
-    this._alpha = Number(e.target.value);
+    this._alphaValue = Number(e.target.value);
     this._setColor(CP._HSV2RGB(this.picker.set()));
   }
 
-  _computeFormat(format, alpha) {
-    return (alpha !== 1) ? 'rgba' : format;
-  }
-
-  _getFormattedColor() {
-    const rgbValues = CP._HSV2RGB(this.picker.get());
-    const getCSSColor = {
-      rgb: (value) => `rgb(${value.join(', ')})`,
-      rgba: (value) => `rgba(${value.concat(this._alpha).join(', ')})`,
-      hex: (value) => `#${CP.RGB2HEX(value)}`,
-    };
-    return getCSSColor[this._format](rgbValues);
+  _computeFormat(format, alphaValue) {
+    return (alphaValue !== 1) ? 'rgba' : format;
   }
 
   /**
