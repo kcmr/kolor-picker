@@ -71,9 +71,7 @@ class KolorPicker extends Polymer.Element {
   _addAlphaControl() {
     const rangeInput = this.$.range.cloneNode();
     rangeInput.hidden = false;
-    ['change', 'input'].forEach((event) => {
-      rangeInput.addEventListener(event, this._onInputRangeChange);
-    });
+    rangeInput.addEventListener('input', this._onInputRangeChange);
     this.picker.picker.querySelector('.color-picker-control').appendChild(rangeInput);
   }
 
