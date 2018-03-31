@@ -37,6 +37,10 @@ class KolorPicker extends Polymer.Element {
         type: Boolean,
         value: false,
       },
+      _alpha: {
+        type: Number,
+        value: 1,
+      },
     };
   }
 
@@ -78,17 +82,15 @@ class KolorPicker extends Polymer.Element {
   }
 
   _onInputRangeChange(e) {
-    const rgbValues = CP._HSV2RGB(this.picker.set());
-    const isAlpha = Number(e.target.value) !== 1;
-    const rgbColor = (isAlpha)
-      ? `rgba(${rgbValues.concat(e.target.value).join(', ')})`
-      : `rgb(${rgbValues.join(', ')})`;
-    this.color = rgbColor;
+    this._alpha = Number(e.target.value);
+    this._setColor(CP._HSV2RGB(this.picker.set()));
   }
 
   _getFormattedColor(color) {
-    const formatted = `#${color}`;
-    return (this.uppercase) ? formatted.toUpperCase() : formatted;
+    const rgbValues = CP._HSV2RGB(this.picker.get());
+    return (this._alpha !== 1)
+      ? `rgba(${rgbValues.concat(this._alpha).join(', ')})`
+      : `rgb(${rgbValues.join(', ')})`;
   }
 
   /**
