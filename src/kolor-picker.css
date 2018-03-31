@@ -1,5 +1,5 @@
 :host {
-  display: block;
+  display: inline-block;
 }
 
 :host([hidden]),
@@ -27,7 +27,7 @@
 }
 
 .picker-wrapper {
-  position: relative;
+  position: absolute;
 }
 
 .color-picker,

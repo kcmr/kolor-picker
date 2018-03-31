@@ -109,10 +109,7 @@ class KolorPicker extends Polymer.Element {
   }
 
   _onClickOutside(e) {
-    const evPath = e.composedPath();
-    const clickOutsidePicker = evPath.indexOf(this.$.picker) === -1;
-    const clickInButton = evPath.indexOf(this.$.btn) !== -1;
-    if (clickOutsidePicker && !clickInButton) {
+    if (e.composedPath().indexOf(this) === -1) {
       document.removeEventListener('click', this._onClickOutside);
       this.hide();
     }
