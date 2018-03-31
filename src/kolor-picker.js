@@ -38,7 +38,6 @@ class KolorPicker extends Polymer.Element {
     this._initializePicker();
   }
 
-  /* global CP */
   _initializePicker() {
     this.picker = new CP(this.$.input, false, this.$.picker);
     this.picker.on('change', this._setColor.bind(this));
