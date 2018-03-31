@@ -4,12 +4,13 @@
 <dom-module id="kolor-picker">
   <template>
     <style>
-      :host([hidden]), [hidden] {
-        display: none !important;
-      }
-      
       :host {
         display: block;
+      }
+      
+      :host([hidden]),
+      [hidden] {
+        display: none !important;
       }
       
       .btn-picker {
@@ -27,11 +28,11 @@
       }
       
       .color-picker,
-      .color-picker:before,
-      .color-picker:after,
+      .color-picker::before,
+      .color-picker::after,
       .color-picker *,
-      .color-picker *:before,
-      .color-picker *:after {
+      .color-picker *::before,
+      .color-picker *::after {
         box-sizing: border-box;
       }
       
@@ -44,7 +45,7 @@
       
       .color-picker-control {
         padding: 0.625rem;
-        box-shadow: 0 1px 1px rgba(0,0,0,0.5);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
         background-color: #fff;
         border-radius: 2px;
         display: flex;
@@ -52,9 +53,12 @@
       }
       
       .color-picker-control *,
-      .color-picker-control *:before,
-      .color-picker-control *:after {border-color:inherit}
-      .color-picker-control:after {
+      .color-picker-control *::before,
+      .color-picker-control *::after {
+        border-color: inherit;
+      }
+      
+      .color-picker-control::after {
         content: "";
         display: table;
         clear: both;
@@ -70,7 +74,7 @@
         height: 9.375rem;
         margin-left: 0.0625rem;
         cursor: ns-resize;
-        background-image: linear-gradient(to top,#f00 0%,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,#f00 100%);
+        background-image: linear-gradient(to top, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
         background-size: 100% 100%;
         overflow: hidden;
       }
@@ -85,8 +89,8 @@
         height: 0.375rem;
       }
       
-      .color-picker-h i:before {
-        content:"";
+      .color-picker-h i::before {
+        content: "";
         position: absolute;
         top: 0;
         right: 0;
@@ -104,7 +108,7 @@
         width: 9.375rem;
         height: 9.375rem;
         float: left;
-        background-image: linear-gradient(to top,#000,rgba(0,0,0,0)),linear-gradient(to right,#fff,rgba(255,255,255,0));
+        background-image: linear-gradient(to top, #000, rgba(0, 0, 0, 0)), linear-gradient(to right, #fff, rgba(255, 255, 255, 0));
         background-size: 100% 100%;
         cursor: crosshair;
       }
@@ -119,8 +123,8 @@
         height: 0.5rem;
       }
       
-      .color-picker-sv i:before,
-      .color-picker-sv i:after {
+      .color-picker-sv i::before,
+      .color-picker-sv i::after {
         content: "";
         position: absolute;
         top: 0;
@@ -133,7 +137,7 @@
         border-radius: 100%;
       }
       
-      .color-picker-sv i:before {
+      .color-picker-sv i::before {
         top: -0.0625rem;
         right: -0.0625rem;
         bottom: -0.0625rem;
@@ -147,7 +151,7 @@
            -moz-user-select: none;
             -ms-user-select: none;
                 user-select: none;
-        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         -webkit-tap-highlight-color: transparent;
       }
     </style>
@@ -164,6 +168,7 @@
     </div>
   </template>
 
+  <script src="../../color-picker/color-picker.js"></script>
   <script>
     /**
      * `<kolor-picker>` displays a color picker with support for multiple color formats (hex, rgb, rgba) and transparency.

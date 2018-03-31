@@ -1,5 +1,6 @@
 'use strict';
 
+const path = require('path');
 const gulp = require('gulp');
 const del = require('del');
 const browserSync = require('browser-sync').create();
@@ -9,6 +10,10 @@ const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const pxtorem = require('postcss-pixels-to-rem');
 const prettify = require('gulp-html-prettify');
+const stylelint = require('stylelint');
+const reporter = require('postcss-reporter');
+const reporterFormatter = require('postcss-reporter/lib/formatter');
+const component = path.basename(__dirname);
 const config = require('./.buildconfig.json');
 
 const BUILD_DIRECTORY = 'dist/';
@@ -17,6 +22,8 @@ gulp.task('clean', () => del([BUILD_DIRECTORY]));
 
 gulp.task('build:dist', ['clean'], () => {
   const files = processInline();
+  const customFormatter = reporterFormatter();
+
   return gulp.src(['src/*.html'])
     .pipe(inlineSource({
       compress: false,
@@ -25,6 +32,18 @@ gulp.task('build:dist', ['clean'], () => {
     .pipe(files.extract('style'))
     .pipe(postcss([
       pxtorem(config.pxtorem),
+      stylelint(),
+      reporter({
+        clearReportedMessages: true,
+        formatter: function(params) {
+          /* eslint-disable no-console */
+          console.log(customFormatter({
+            source: `src/${component}.css`,
+            messages: params.messages,
+          }));
+          /* eslint-enable no-console */
+        },
+      }),
       autoprefixer(config.autoprefixer),
     ]))
     .pipe(files.restore())
