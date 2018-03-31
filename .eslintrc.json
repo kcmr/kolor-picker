@@ -12,10 +12,11 @@
   ],
   "rules": {
     "brace-style": "off",
-    "new-cap": ["error", { "capIsNewExceptions": ["Polymer", "RGB2HEX"] }],
+    "new-cap": ["error", {"capIsNewExceptions": ["Polymer", "RGB2HEX"]}],
     "no-var": "off",
     "require-jsdoc": "off",
-    "max-len": 0
+    "max-len": 0,
+    "no-unused-vars": [2, {"vars": "all", "args": "all"}]
   },
   "globals": {
     "Polymer": true,
