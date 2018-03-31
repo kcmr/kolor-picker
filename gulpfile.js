@@ -10,6 +10,7 @@ const pxtorem = require('postcss-pixels-to-rem');
 const prettify = require('gulp-html-prettify');
 const stylelint = require('stylelint');
 const reporter = require('postcss-reporter');
+const eslint = require('gulp-eslint');
 const config = require('./.buildconfig.json');
 
 const BUILD_DIRECTORY = 'dist/';
@@ -30,7 +31,14 @@ gulp.task('styles', () => {
     .pipe(gulp.dest(TMP_DIRECTORY));
 });
 
-gulp.task('build:dist', ['clean', 'styles'], () => {
+gulp.task('eslint', () => {
+  return gulp.src(['src/*.js'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(gulp.dest(TMP_DIRECTORY));
+});
+
+gulp.task('build:dist', ['clean', 'styles', 'eslint'], () => {
   return gulp.src(['src/*.html'])
     .pipe(inlineSource({
       compress: false,
@@ -45,7 +53,7 @@ gulp.task('start-browsersync', () => {
 });
 
 gulp.task('watch:sources', () => {
-  gulp.watch(['src/*'], ['styles', 'build:dist']);
+  gulp.watch(['src/*'], ['styles', 'eslint', 'build:dist']);
 });
 
 gulp.task('watch:dist', () => {
