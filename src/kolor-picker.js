@@ -54,6 +54,10 @@ class KolorPicker extends Polymer.Element {
     ];
   }
 
+  get _rgbData() {
+    return CP._HSV2RGB(this.picker.get());
+  }
+
   constructor() {
     super();
     this._onClickOutside = this._onClickOutside.bind(this);
@@ -68,10 +72,6 @@ class KolorPicker extends Polymer.Element {
   ready() {
     super.ready();
     this._initializePicker();
-  }
-
-  get _rgbData() {
-    return CP._HSV2RGB(this.picker.get());
   }
 
   _initializePicker() {
