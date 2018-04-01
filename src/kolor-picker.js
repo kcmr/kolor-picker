@@ -41,9 +41,9 @@ class KolorPicker extends Polymer.Element {
         type: Number,
         value: 1,
       },
-      _format: {
+      _currentFormat: {
         type: String,
-        computed: '_computeFormat(format, _alphaValue)',
+        computed: '_computeCurrentFormat(format, alpha, _alphaValue)',
       },
     };
   }
@@ -90,7 +90,7 @@ class KolorPicker extends Polymer.Element {
       rgba: (value) => `rgba(${value.concat(this._alphaValue).join(', ')})`,
       hex: (value) => `#${CP.RGB2HEX(value)}`,
     };
-    return getCSSColor[this._format](rgbData);
+    return getCSSColor[this._currentFormat](rgbData);
   }
 
   _setAlphaControlColor() {
@@ -136,8 +136,8 @@ class KolorPicker extends Polymer.Element {
     this._setColor();
   }
 
-  _computeFormat(format, alphaValue) {
-    return (alphaValue !== 1) ? 'rgba' : format;
+  _computeCurrentFormat(format, alpha, alphaValue) {
+    return (alpha && alphaValue !== 1) ? 'rgba' : format;
   }
 
   /**
