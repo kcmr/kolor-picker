@@ -84,13 +84,13 @@ class KolorPicker extends Polymer.Element {
   }
 
   _getFormattedColor() {
-    const rgbValues = CP._HSV2RGB(this.picker.get());
+    const rgbData = CP._HSV2RGB(this.picker.get());
     const getCSSColor = {
       rgb: (value) => `rgb(${value.join(', ')})`,
       rgba: (value) => `rgba(${value.concat(this._alphaValue).join(', ')})`,
       hex: (value) => `#${CP.RGB2HEX(value)}`,
     };
-    return getCSSColor[this._format](rgbValues);
+    return getCSSColor[this._format](rgbData);
   }
 
   _setAlphaControlColor() {
@@ -100,8 +100,8 @@ class KolorPicker extends Polymer.Element {
   }
 
   _getSolidHexColor() {
-    const rgbValues = CP._HSV2RGB(this.picker.get());
-    return `#${CP.RGB2HEX(rgbValues)}`;
+    const rgbData = CP._HSV2RGB(this.picker.get());
+    return `#${CP.RGB2HEX(rgbData)}`;
   }
 
   _addAlphaControl() {
