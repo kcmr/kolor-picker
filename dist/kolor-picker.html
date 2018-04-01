@@ -1,8 +1,9 @@
 <link rel="import" href="../../polymer/polymer-element.html">
+<link rel="import" href="input-range-styles.html">
 
 <dom-module id="kolor-picker">
   <template>
-    <style>
+    <style include="input-range-styles">
       :host {
         display: inline-block;
       }
@@ -28,6 +29,7 @@
       
       .input-range {
         width: 100%;
+        background: transparent;
         margin: 0.625rem 0 0;
       }
       
@@ -197,7 +199,6 @@
         return {
           /**
            * Initial color of the picker in one of the allowed formats: HEX, RGB, RGBA.
-           * Named colors are not supported.
            */
           color: {
             type: String,
@@ -262,6 +263,7 @@
     
       _setColor() {
         this.color = this._getFormattedColor();
+        this._setAlphaControlColor();
       }
     
       _getFormattedColor() {
@@ -272,6 +274,17 @@
           hex: (value) => `#${CP.RGB2HEX(value)}`,
         };
         return getCSSColor[this._format](rgbValues);
+      }
+    
+      _setAlphaControlColor() {
+        if (this._rangeControl && this.alpha) {
+          document.documentElement.style.setProperty('--kolor-picker-solid-color', this._getSolidHexColor());
+        }
+      }
+    
+      _getSolidHexColor() {
+        const rgbValues = CP._HSV2RGB(this.picker.get());
+        return `#${CP.RGB2HEX(rgbValues)}`;
       }
     
       _addAlphaControl() {

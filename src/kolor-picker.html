@@ -1,8 +1,9 @@
 <link rel="import" href="../../polymer/polymer-element.html">
+<link rel="import" href="input-range-styles.html">
 
 <dom-module id="kolor-picker">
   <template>
-    <link rel="stylesheet" href="../.tmp/kolor-picker.css" inline>
+    <link rel="stylesheet" href="../.tmp/kolor-picker.css" include="input-range-styles" inline>
 
     <button on-click="show" title="Choose color" class="btn-picker" tabindex="0" id="btn">
       <slot name="color-indicator">

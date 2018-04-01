@@ -16,7 +16,6 @@ class KolorPicker extends Polymer.Element {
     return {
       /**
        * Initial color of the picker in one of the allowed formats: HEX, RGB, RGBA.
-       * Named colors are not supported.
        */
       color: {
         type: String,
@@ -81,6 +80,7 @@ class KolorPicker extends Polymer.Element {
 
   _setColor() {
     this.color = this._getFormattedColor();
+    this._setAlphaControlColor();
   }
 
   _getFormattedColor() {
@@ -91,6 +91,17 @@ class KolorPicker extends Polymer.Element {
       hex: (value) => `#${CP.RGB2HEX(value)}`,
     };
     return getCSSColor[this._format](rgbValues);
+  }
+
+  _setAlphaControlColor() {
+    if (this._rangeControl && this.alpha) {
+      document.documentElement.style.setProperty('--kolor-picker-solid-color', this._getSolidHexColor());
+    }
+  }
+
+  _getSolidHexColor() {
+    const rgbValues = CP._HSV2RGB(this.picker.get());
+    return `#${CP.RGB2HEX(rgbValues)}`;
   }
 
   _addAlphaControl() {
