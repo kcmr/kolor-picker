@@ -70,6 +70,10 @@ class KolorPicker extends Polymer.Element {
     this._initializePicker();
   }
 
+  get _rgbData() {
+    return CP._HSV2RGB(this.picker.get());
+  }
+
   _initializePicker() {
     setTimeout(() => {
       this.picker = new CP(this.$.input, false, this.$.picker);
@@ -83,25 +87,20 @@ class KolorPicker extends Polymer.Element {
     this._setAlphaControlColor();
   }
 
-  _getFormattedColor() {
-    const rgbData = CP._HSV2RGB(this.picker.get());
+  _getFormattedColor(format = this._currentFormat) {
     const getCSSColor = {
       rgb: (value) => `rgb(${value.join(', ')})`,
       rgba: (value) => `rgba(${value.concat(this._alphaValue).join(', ')})`,
       hex: (value) => `#${CP.RGB2HEX(value)}`,
     };
-    return getCSSColor[this._currentFormat](rgbData);
+    return getCSSColor[format](this._rgbData);
   }
 
   _setAlphaControlColor() {
     if (this._rangeControl && this.alpha) {
-      document.documentElement.style.setProperty('--kolor-picker-solid-color', this._getSolidHexColor());
+      const doc = document.documentElement;
+      doc.style.setProperty('--kolor-picker-solid-color', this._getFormattedColor('hex'));
     }
-  }
-
-  _getSolidHexColor() {
-    const rgbData = CP._HSV2RGB(this.picker.get());
-    return `#${CP.RGB2HEX(rgbData)}`;
   }
 
   _addAlphaControl() {
