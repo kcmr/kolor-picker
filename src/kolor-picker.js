@@ -117,7 +117,12 @@ class KolorPicker extends Polymer.Element {
       this._enableAlphaControl();
     } else {
       this._disableAlphaControl();
+      this._setSolidColor();
     }
+  }
+
+  _setSolidColor() {
+    this.color = this._getFormattedColor(this.format);
   }
 
   _enableAlphaControl() {
@@ -127,6 +132,7 @@ class KolorPicker extends Polymer.Element {
 
   _disableAlphaControl() {
     this._rangeControl.hidden = true;
+    this._rangeControl.value = 1;
     this._rangeControl.removeEventListener('input', this._onInputRangeChange);
   }
 
