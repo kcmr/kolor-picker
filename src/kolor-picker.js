@@ -115,6 +115,7 @@ class KolorPicker extends Polymer.Element {
 
     if (alpha) {
       this._enableAlphaControl();
+      this._setAlphaControlColor();
     } else {
       this._disableAlphaControl();
       this._setSolidColor();
