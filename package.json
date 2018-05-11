@@ -32,10 +32,6 @@
     "serve": "gulp serve",
     "build": "gulp build:dist && polymer analyze dist/kolor-picker.html > analysis.json"
   },
-  "browserslist": [
-    "last 2 versions",
-    "not dead"
-  ],
   "pre-commit": [
     "lint"
   ]
