@@ -135,6 +135,7 @@ class KolorPicker extends Polymer.Element {
   _disableAlphaControl() {
     this._rangeControl.hidden = true;
     this._rangeControl.value = 1;
+    this._alphaValue = 1;
     this._rangeControl.removeEventListener('input', this._onInputRangeChange);
   }
 
@@ -152,6 +153,7 @@ class KolorPicker extends Polymer.Element {
    */
   show() {
     this.picker.enter();
+    this._setAlphaControlColor();
     document.addEventListener('click', this._onClickOutside);
     /**
      * Fired after showing the picker.
