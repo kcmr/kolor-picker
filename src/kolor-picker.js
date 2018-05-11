@@ -19,7 +19,6 @@ class KolorPicker extends Polymer.Element {
        */
       color: {
         type: String,
-        value: '#000',
         notify: true,
       },
       /**
