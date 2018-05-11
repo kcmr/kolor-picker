@@ -105,7 +105,9 @@ class KolorPicker extends Polymer.Element {
 
   _addAlphaControl() {
     this._rangeControl = this.$.range.cloneNode();
-    this.picker.picker.querySelector('.color-picker-control').appendChild(this._rangeControl);
+    this.picker.picker
+      .querySelector('.color-picker-control')
+      .appendChild(this._rangeControl);
   }
 
   _alphaChanged(alpha, rangeControl) {
