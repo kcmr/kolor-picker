@@ -36,6 +36,13 @@ class KolorPicker extends Polymer.Element {
         type: String,
         value: 'hex',
       },
+      /**
+       * Title for the button element.
+       */
+      buttonTitle: {
+        type: String,
+        value: 'Choose color',
+      },
       _alphaValue: {
         type: Number,
         value: 1,

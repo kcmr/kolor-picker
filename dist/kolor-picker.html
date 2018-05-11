@@ -168,7 +168,7 @@
       }
     </style>
 
-    <button on-click="show" title="Choose color" class="btn-picker" tabindex="0" id="btn">
+    <button on-click="show" title="[[buttonTitle]]" class="btn-picker" tabindex="0" id="btn">
       <slot name="color-indicator">
         <span tabindex="-1" class="current-color" style$="background-color: [[color]]"></span>
       </slot>
@@ -218,6 +218,13 @@
           format: {
             type: String,
             value: 'hex',
+          },
+          /**
+           * Title for the button element.
+           */
+          buttonTitle: {
+            type: String,
+            value: 'Choose color',
           },
           _alphaValue: {
             type: Number,
