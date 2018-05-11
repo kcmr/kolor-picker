@@ -202,7 +202,6 @@
            */
           color: {
             type: String,
-            value: '#000',
             notify: true,
           },
           /**
@@ -288,7 +287,9 @@
     
       _addAlphaControl() {
         this._rangeControl = this.$.range.cloneNode();
-        this.picker.picker.querySelector('.color-picker-control').appendChild(this._rangeControl);
+        this.picker.picker
+          .querySelector('.color-picker-control')
+          .appendChild(this._rangeControl);
       }
     
       _alphaChanged(alpha, rangeControl) {
@@ -317,6 +318,7 @@
       _disableAlphaControl() {
         this._rangeControl.hidden = true;
         this._rangeControl.value = 1;
+        this._alphaValue = 1;
         this._rangeControl.removeEventListener('input', this._onInputRangeChange);
       }
     
@@ -334,7 +336,16 @@
        */
       show() {
         this.picker.enter();
+        this._setAlphaControlColor();
         document.addEventListener('click', this._onClickOutside);
+        /**
+         * Fired after showing the picker.
+         * @event show
+         */
+        this.dispatchEvent(new CustomEvent('show', {
+          bubbles: false,
+          composed: true,
+        }));
       }
     
       /**
@@ -342,6 +353,14 @@
        */
       hide() {
         this.picker.exit();
+        /**
+         * Fired after hiding the picker.
+         * @event hide
+         */
+        this.dispatchEvent(new CustomEvent('hide', {
+          bubbles: false,
+          composed: true,
+        }));
       }
     
       _onClickOutside(e) {
