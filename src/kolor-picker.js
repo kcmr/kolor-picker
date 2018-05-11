@@ -153,6 +153,14 @@ class KolorPicker extends Polymer.Element {
   show() {
     this.picker.enter();
     document.addEventListener('click', this._onClickOutside);
+    /**
+     * Fired after showing the picker.
+     * @event show
+     */
+    this.dispatchEvent(new CustomEvent('show', {
+      bubbles: false,
+      composed: true,
+    }));
   }
 
   /**
@@ -160,6 +168,14 @@ class KolorPicker extends Polymer.Element {
    */
   hide() {
     this.picker.exit();
+    /**
+     * Fired after hiding the picker.
+     * @event hide
+     */
+    this.dispatchEvent(new CustomEvent('hide', {
+      bubbles: false,
+      composed: true,
+    }));
   }
 
   _onClickOutside(e) {
