@@ -1,13 +1,19 @@
+import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import {css as inputRangeCss} from './input-range.css.js';
+import {css} from './kolor-picker.css.js';
+import {tpl} from './kolor-picker.html.js';
+import './kp.js';
+
 /**
  * `<kolor-picker>` displays a color picker with support for multiple color formats and alpha transparency.
  *
- * @summary Polymer 2 element that displays a color picker.
+ * @summary Polymer 3 element that displays a color picker.
  * @customElement
  * @polymer
  * @demo demo/index.html
- * @extends {Polymer.Element}
+ * @extends {PolymerElement}
  */
-class KolorPicker extends Polymer.Element {
+class KolorPicker extends PolymerElement {
   static get is() {
     return 'kolor-picker';
   }
@@ -52,6 +58,22 @@ class KolorPicker extends Polymer.Element {
         computed: '_computeCurrentFormat(format, alpha, _alphaValue)',
       },
     };
+  }
+
+  static get styles() {
+    return html`
+      <style>
+        ${inputRangeCss}
+        ${css}
+      </style>
+    `;
+  }
+
+  static get template() {
+    return html`
+      ${this.styles}
+      ${tpl}
+    `;
   }
 
   static get observers() {

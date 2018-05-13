@@ -1,3 +1,6 @@
+import {html} from '@polymer/polymer/polymer-element.js';
+
+export const css = html`
 :host {
   display: inline-block;
 }
@@ -156,4 +159,4 @@
   user-select: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent;
-}
+}`;

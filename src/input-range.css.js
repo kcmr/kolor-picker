@@ -1,3 +1,6 @@
+import {html} from '@polymer/polymer/polymer-element.js';
+
+export const css = html`
 input[type="range"],
 input[type="range"]::-webkit-slider-thumb {
   /* stylelint-disable property-no-vendor-prefix */
@@ -63,4 +66,4 @@ input::-ms-track {
 
 input[type="range"]:focus {
   outline: none;
-}
+}`;
